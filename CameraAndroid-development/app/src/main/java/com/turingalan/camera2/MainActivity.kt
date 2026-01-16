@@ -14,23 +14,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.turingalan.camera2.ui.theme.Camera2Theme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             Camera2Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    val viewModel: CameraViewModel = remember { CameraViewModel() }
-                    CameraScreen(
-                        modifier = Modifier.consumeWindowInsets(innerPadding).padding(innerPadding),
-                        viewModel = viewModel)
-                }
+                NavGraph()
+            }
             }
         }
     }
-}
+
 
 
 

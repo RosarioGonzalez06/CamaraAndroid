@@ -31,6 +31,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 fun CameraScreen(
     modifier: Modifier = Modifier,
     viewModel: CameraViewModel,
+    onNavigateToCapture: () -> Unit
 ) {
     val cameraPermissionState = rememberPermissionState(
         Manifest.permission.CAMERA
@@ -39,7 +40,8 @@ fun CameraScreen(
     if (cameraPermissionState.status.isGranted) {
         CameraPreview(
             modifier = modifier,
-            viewModel = viewModel
+            viewModel = viewModel,
+            onNavigateToCapture = onNavigateToCapture
         )
     }
     // No tenemos permisos de usar la camara
@@ -54,7 +56,8 @@ fun CameraScreen(
 fun CameraPreview(
     modifier: Modifier = Modifier,
     viewModel: CameraViewModel,
-    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    onNavigateToCapture: ()-> Unit
 ) {
     val surfaceRequest by viewModel.surfaceRequest.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -84,8 +87,7 @@ fun CameraPreview(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
-                onClick = {},
-                modifier = Modifier.fillMaxWidth()
+                onClick = onNavigateToCapture
             ) {
                 Text("Tomar foto")
             }
