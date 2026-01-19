@@ -25,13 +25,14 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import java.io.File
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraScreen(
     modifier: Modifier = Modifier,
     viewModel: CameraViewModel,
-    onNavigateToCapture: () -> Unit
+    onNavigateToCapture: (File) -> Unit
 ) {
     val cameraPermissionState = rememberPermissionState(
         Manifest.permission.CAMERA
@@ -57,7 +58,7 @@ fun CameraPreview(
     modifier: Modifier = Modifier,
     viewModel: CameraViewModel,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-    onNavigateToCapture: ()-> Unit
+    onNavigateToCapture: (File)-> Unit
 ) {
     val surfaceRequest by viewModel.surfaceRequest.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -87,7 +88,11 @@ fun CameraPreview(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
-                onClick = onNavigateToCapture
+                onClick = {
+                    viewModel.takePhoto(context) { file ->
+                        onNavigateToCapture(file)
+                    }
+                }
             ) {
                 Text("Tomar foto")
             }
@@ -95,10 +100,7 @@ fun CameraPreview(
             Button(
                 onClick = {
                     viewModel.switchCamera(lifecycleOwner)
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
+                }
             ) {
                 Text("Cambiar cámara")
             }

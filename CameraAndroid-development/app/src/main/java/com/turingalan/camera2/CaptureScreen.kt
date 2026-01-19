@@ -1,5 +1,6 @@
 package com.turingalan.camera2
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -8,20 +9,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import android.graphics.BitmapFactory
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.runtime.remember
+
+
+
 
 @Composable
 fun CaptureScreen(
-    onCancel: ()-> Unit,
-    modifier: Modifier= Modifier
+    photoPath: String,
+    onCancel: () -> Unit
 ) {
+    val bitmap = remember(photoPath) {
+        BitmapFactory.decodeFile(photoPath)
+    }
+
     Column(
         modifier = Modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        Image(
+            bitmap = bitmap.asImageBitmap(),
+            contentDescription = null
+        )
+
         Button(
-            onClick = onCancel
+            onClick = onCancel,
+            modifier = Modifier.padding(top = 16.dp)
         ) {
-            Text("return")
+            Text("Volver")
         }
     }
 }

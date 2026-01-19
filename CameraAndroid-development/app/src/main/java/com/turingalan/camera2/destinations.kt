@@ -5,5 +5,7 @@ sealed class destinations (val route: String) {
     @Serializable
     object Camera: destinations("CameraScreen")
     @Serializable
-    object Capture: destinations("CaptureScreen")
+    data class Capture(
+        val photoPath: String
+    ) : destinations("CaptureScreen/{photoPath}")
 }

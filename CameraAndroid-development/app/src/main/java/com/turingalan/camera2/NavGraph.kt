@@ -24,17 +24,25 @@ fun NavGraph() {
             composable<destinations.Camera> {
                 CameraScreen(
                     modifier = hostModifier,
-                    viewModel=viewModel,
-                    onNavigateToCapture = {
-                        navController.navigate(destinations.Capture)
-                    },
+                    viewModel = viewModel,
+                    onNavigateToCapture = { file ->
+                        navController.navigate(
+                            destinations.Capture(file.absolutePath)
+                        )
+                    }
                 )
             }
-            composable <destinations.Capture>{
+
+            composable<destinations.Capture> { backStackEntry ->
+                val args = backStackEntry.arguments!!
+                val photoPath =
+                    args.getString("photoPath") ?: ""
+
                 CaptureScreen(
-                    onCancel = {navController.popBackStack()},
-                    )
-                }
+                    photoPath = photoPath,
+                    onCancel = { navController.popBackStack() }
+                )
+            }
             }
         }
     }
